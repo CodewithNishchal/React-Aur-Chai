@@ -46,8 +46,8 @@ function App() {
         <Route
           loader={githubinfoLoader}
           path='github'
-          element={<Github />} />
-
+          element={<Github />}
+        />
       </Route>
     )
   )
