@@ -8,7 +8,7 @@ class Service {
 
     constructor() {
         this.client
-            .setEndpoint() // Your API Endpoint
+            .setEndpoint(conf.appwriteUrl) // Your API Endpoint
             .setProject(conf.appwriteProjectId);// Your project ID
         
         this.databases = new Databases(this.client);

@@ -65,10 +65,11 @@ function Login() {
                   label="Password"
                 placeholder="Enter Your Password"
                 type="password"
-                          {...register, ("password", {
+                {...register("password", {
                     required: true,
-                })}
-                      />
+                          })
+                          }
+            />
             <Button
                 type='submit'
                 className='w-full'
