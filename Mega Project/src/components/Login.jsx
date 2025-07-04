@@ -15,9 +15,12 @@ function Login() {
     const login = async (data) => {
         setError("")
         try {
-            const session = authService.login(data)
+            const session = await authService.login(data)
+            // console.log(session);
+            
             if (session) {
                 const userData = await authService.getCurrentUser()
+                console.log(userData)
                 if (userData) dispatch(authLogin(userData))
                 navigate("/")
             }

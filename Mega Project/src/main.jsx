@@ -1,7 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import {AuthLayout, Login} from "./components/index.js"
+import { AuthLayout } from "./components/index.js"
+import Login from "./pages/Login.jsx"
 import Home from './pages/Home.jsx'
 import { Provider } from 'react-redux'
 import store from './store/store.js'
@@ -32,6 +33,14 @@ const router = createBrowserRouter([
           </AuthLayout>
         ),
       },
+      {
+        path: "/signup",
+        element: (
+            <AuthLayout authentication={false}>
+                <Signup />
+            </AuthLayout>
+        ),
+    },
       {
         path: "/all-posts",
         element: (

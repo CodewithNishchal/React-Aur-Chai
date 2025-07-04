@@ -4,15 +4,16 @@ import { Container, PostCard } from '../components'
 
 function Home() {
 
-    const [posts, setPosts] = useState()
+    const [posts, setPosts] = useState([])
     useEffect(() => {
-        appwriteService.getPosts().then((posts) => {
+        appwriteService.getPosts([]).then((posts) => {
+            console.log(posts)
             if (posts)
-                setPosts(posts)
+                setPosts(posts.documents)
         })
     }, [])
 
-    if (!posts.length)
+    if (posts.length === 0)
         return (
             <div className="w-full py-8 mt-4 text-center">
                 <Container>

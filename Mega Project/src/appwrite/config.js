@@ -1,5 +1,6 @@
 import conf from "../conf/config";
 import { Client, ID, Databases, Storage, Query } from "appwrite";
+import { slugify } from "../assets/slugify";
 
 class Service {
     client = new Client();
@@ -15,9 +16,11 @@ class Service {
         this.bucket = new Storage(this.client)
     }
 
-    async createPost({ title, slug, content, featuredImage, status, userId }) {
+    async createPost({ title, slug, content, feauturedImage, status, userId }) {
+        console.log(feauturedImage)
          try {
-            
+             const sanitizedSlug = slugify(slug)
+             console.log(slug)
              return await this.databases.createDocument(
                  conf.appwriteDatabaseId,
                  conf.appwriteCollectionId,
@@ -25,7 +28,7 @@ class Service {
                  {
                     title,
                     content,
-                     featuredImage,
+                    feauturedImage,
                      status,
                     userId,
                  }
@@ -38,6 +41,7 @@ class Service {
     
     async updatePost(slug, { title, content, featuredImage, status }) {
         try {
+            const sanitizedSlug = slugify(slug)
             return this.databases.updateDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
@@ -57,6 +61,7 @@ class Service {
 
     async deletePost(slug) {
         try {
+            const sanitizedSlug = slugify(slug)
             await this.databases.deleteDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
@@ -71,17 +76,19 @@ class Service {
 
     async getPost(slug) {
         try {
-            await this.databases.getDocument(
+            console.log(slug)
+            return await this.databases.getDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 slug,
             )
         } catch (error) {
             console.log(error)
+            return null
         }
     }
 
-    async getPosts(queries = [Query.equal("status", "active")]) {
+    async getPosts(queries = []) {
         try {
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
@@ -96,11 +103,12 @@ class Service {
     //File Upload Services
 
     async uploadFile(file) {
+        console.log(file)
         try {
             return await this.bucket.createFile(
                 conf.appwriteBucketId,
                 ID.unique(),
-                file,
+                file
             )
         } catch (error) {
             console.log(error);
@@ -122,11 +130,11 @@ class Service {
     }
 
     getFilePreview(fileId) {
+        // console.log(fileId)
         try {
-            return this.bucket.getFilePreview(
-                conf.appwriteBucketId,
-                fileId,
-            )
+            const prev = this.bucket.getFileDownload(conf.appwriteBucketId, fileId);
+            console.log(prev)
+            return prev
         } catch (error) {
             console.log(error);
             
